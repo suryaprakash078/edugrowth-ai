@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edu Chat</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 20px;
+        }
+        #chat-container {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            background-color: #fff;
+            max-width: 600px;
+            margin: auto;
+            height: 400px;
+            overflow-y: auto;
+        }
+        #user-input {
+            width: calc(100% - 90px);
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+        #send-btn {
+            padding: 10px 20px;
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #send-btn:hover {
+            background-color: #357ab8;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Edu Chat</h1>
+<div id="chat-container"></div>
+<input type="text" id="user-input" placeholder="Type your message...">
+<button id="send-btn">Send</button>
+<div id="loading" style="display: none;">Loading...</div>
+
+<script>
+    document.getElementById('send-btn').onclick = function() {
+        const userInput = document.getElementById('user-input');
+        const message = userInput.value.trim();
+        if (message) {
+            // Display user message
+            const chatContainer = document.getElementById('chat-container');
+            chatContainer.innerHTML += `<div><strong>You:</strong> ${message}</div>`;
+            userInput.value = '';
+            document.getElementById('loading').style.display = 'block'; // Show loading
+
+            // Send message to the Python backend
+            fetch('/chatbot', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ message: message }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Display bot response
+                chatContainer.innerHTML += `<div><strong>Bot:</strong> ${data.response}</div>`;
+                chatContainer.scrollTop = chatContainer.scrollHeight; // Scroll to the bottom
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                chatContainer.innerHTML += `<div><strong>Bot:</strong> Sorry, there was an error processing your request.</div>`;
+            })
+            .finally(() => {
+                document.getElementById('loading').style.display = 'none'; // Hide loading
+            });
+        }
+    };
+</script>
+</body>
+</html>

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Educational Videos Home</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background-color: #ffffff;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        h1 {
+            font-size: 24px;
+            color: #333;
+        }
+        .nav-bar {
+            display: flex;
+            justify-content: center;
+            background-color: #4a90e2;
+            padding: 10px 0;
+        }
+        .nav-bar a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 16px;
+            transition: color 0.3s;
+        }
+        .nav-bar a:hover {
+            color: #357ab8;
+        }
+        .search-container {
+            flex: 1;
+            margin: 20px;
+            text-align: center;
+        }
+        .search-box {
+            width: 80%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            outline: none;
+        }
+        .video-collection {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        .video-card {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin: 10px;
+            text-align: center;
+            width: 150px;
+            transition: transform 0.2s;
+        }
+        .video-card:hover {
+            transform: scale(1.05);
+        }
+        .video-image {
+            width: 100%;
+            height: auto;
+        }
+        .age-group {
+            font-size: 18px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+        .watch-button {
+            display: inline-block;
+            padding: 10px 15px;
+            font-size: 14px;
+            color: #fff;
+            background-color: #4a90e2;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-bottom: 10px;
+            transition: background-color 0.3s;
+        }
+        .watch-button:hover {
+            background-color: #357ab8;
+        }
+        footer {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background-color: #fff;
+            padding: 10px 0;
+            border-top: 1px solid #e0e0e0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+        footer a {
+            text-decoration: none;
+            color: #4a90e2;
+            font-size: 18px;
+        }
+        footer a:hover {
+            color: #357ab8;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Home</h1>
+    <div class="profile">
+        <a href="profile.html">
+            <img src="profile-pic.jpg" alt="Profile" width="40" height="40" style="border-radius: 50%;">
+        </a>
+    </div>
+</header>
+
+<div class="nav-bar">
+    <a href="about.html">About</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="chat.html">Chatbot</a>
+    <a href="resources.html">Resources</a>
+    <a href="faq.html">FAQ</a>
+    <a href="blog.html">Blog</a>
+    <a href="testimonials.html">Testimonials</a>
+    <a href="contactus.html">Contact Us</a>
+    <a href="quiz.html">Quizzes</a>
+    <a href="progress.html">Progress</a>
+    <a href="tutorials.html">Tutorials</a>
+</div>
+
+<div class="search-container">
+    <input type="text" class="search-box" placeholder="Search educational videos..." oninput="debounceSearch(this.value)">
+</div>
+
+<div class="video-collection" id="video-collection">
+    <!-- Video cards will be dynamically inserted here -->
+</div>
+
+ 
+
+<script>
+    const videos = [
+        { title: "Video 1", category: "Beginner", image: "video1.jpg" },
+        { title: "Video 2", category: "Intermediate", image: "video2.jpg" },
+        { title: "Video 3", category: "Expert", image: "video3.jpg" },
+    ];
+
+    function renderVideos(filter = "") {
+        const videoCollection = document.getElementById('video-collection');
+        videoCollection.innerHTML = '';
+        const filteredVideos = videos.filter(video => video.title.toLowerCase().includes(filter.toLowerCase()));
+        filteredVideos.forEach(video => {
+            const videoCard = `
+                <div class="video-card">
+                    <img src="${video.image}" alt="${video.title}" class="video-image">
+                    <div class="age-group">${video.category}</div>
+                    <a href="category.html" class="watch-button">Watch Now</a>
+                </div>
+            `;
+            videoCollection.innerHTML += videoCard;
+        });
+    }
+
+    let debounceTimer;
+    function debounceSearch(value) {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+            renderVideos(value);
+        }, 300);
+    }
+
+    // Initial render
+    renderVideos();
+</script>
+</body>
+</html>

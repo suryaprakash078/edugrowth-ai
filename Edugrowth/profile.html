@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+         body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 900px;
+            margin: auto;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        h1 {
+            font-weight: bold;
+            color: #333;
+        }
+        .nav {
+            display: flex;
+            gap: 20px;
+        }
+        .nav button {
+            border: none;
+            background: #e0e0e0;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .nav button:hover {
+            background: #d0d0d0;
+        }
+        .profile-photo {
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+        }
+        .field {
+            margin-bottom: 15px;
+        }
+        .field label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .field input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .achievements {
+            margin-top: 20px;
+            background: #f8f8f8;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        .progress {
+            background: #e0e0e0;
+            border-radius: 5px;
+            height: 10px;
+            margin-top: 5px;
+            position: relative;
+        }
+        .progress-bar {
+            background: #00aaff;
+            height: 10px;
+            width: 0;
+            border-radius: 5px;
+        }
+        .achievement {
+            margin-bottom: 15px;
+        }
+        .save-button {
+            background: #00aaff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .save-button:hover {
+            background: #0099e6;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>My Profile</h1>
+        <div class="nav">
+            <a href="home.html" class="watch-button">Go Back</a>
+            <button>My courses</button>
+        </div>
+    </div>
+
+    <form id="profileForm" action="database.py" method="POST" onsubmit="return validateForm()">
+        <div class="field">
+            <label>Profile photo</label>
+            <img src="profile-photo.jpg" alt="Profile Photo" class="profile-photo">
+            <p>JPG, GIF or PNG. Maximum file size 1 MB.</p>
+            <button type="button">Change photo</button>
+        </div>
+
+        <div class="field">
+            <label>UID</label>
+            <input type="text" name="uid" value="928-203-1" readonly>
+        </div>
+
+        <div class="field">
+            <label>Nickname</label>
+            <input type="text" name="nickname" value="student" required>
+        </div>
+
+        <div class="field">
+            <label>Phone number</label>
+            <input type="text" name="phone" value="+7 (999) 493-23-94" required>
+        </div>
+
+        <div class="field">
+            <label>Email</label>
+            <input type="email" name="email" value="stname@gmail.com" required>
+        </div>
+
+        <div class="field">
+            <label>Name</label>
+            <input type="text" name="name" value="name" required>
+        </div>
+
+        <div class="field">
+            <label>Surname</label>
+            <input type="text" name="surname" value="name" required>
+        </div>
+
+        <div class="field">
+            <label>Middle name</label>
+            <input type="text" name="middle_name" value="-">
+        </div>
+
+        <div class="field">
+            <label>Date of Birth</label>
+            <input type="date" name="dob" required>
+        </div>
+
+        <button type="submit" class="save-button">Save Changes</button>
+    </form>
+</div>
+
+<script>
+    function validateForm() {
+        // Add custom validation logic if needed
+        return true; // Allow form submission
+    }
+</script>
+</body>
+</html>

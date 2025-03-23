@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Quiz</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Interactive Quiz</h1>
+    </header>
+    <div class="container">
+        <h2>Test Your Knowledge</h2>
+        <form id="quizForm">
+            <div>
+                <label>1. What is the capital of France?</label><br>
+                <input type="radio" name="q1" value="Paris"> Paris<br>
+                <input type="radio" name="q1" value="London"> London<br>
+                <input type="radio" name="q1" value="Berlin"> Berlin<br>
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+        <div id="result"></div>
+    </div>
+    <script>
+        document.getElementById('quizForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const answer = document.querySelector('input[name="q1"]:checked');
+            const result = document.getElementById('result');
+            if (answer) {
+                result.textContent = answer.value === 'Paris' ? 'Correct!' : 'Wrong answer. The correct answer is Paris.';
+            } else {
+                result.textContent = 'Please select an answer.';
+            }
+        });
+    </script>
+</body>
+</html>

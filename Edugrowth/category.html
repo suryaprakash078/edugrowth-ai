@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subject Category Selection</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+       body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            text-align: center;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 80%;
+            max-width: 600px;
+        }
+        h1 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .category {
+            display: inline-block;
+            margin: 10px;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #e7e7e7;
+            transition: transform 0.3s, background-color 0.3s;
+            cursor: pointer;
+            width: 150px;
+        }
+        .category:hover {
+            transform: scale(1.05);
+            background-color: #d1d1d1;
+        }
+        .category i {
+            font-size: 40px;
+            margin-bottom: 10px;
+            color: #555;
+        }
+        .category p {
+            font-size: 18px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Select a Subject Category</h1>
+    <a href = visualarts.html>
+    <div class="category" onclick="selectCategory('Visual Arts')">
+        <i class="fas fa-paint-brush"></i>
+        <p>Visual Arts</p>
+    </div></a>
+    <a href="visual.html"><div class="category" onclick="selectCategory('Performing Arts')">
+        <i class="fas fa-theater-masks"></i>
+        <p>Performing Arts</p>
+    </div></a>
+    
+    <a href="coding.html"><div class="category" onclick="selectCategory('Coding')">
+        <i class="fas fa-code"></i>
+        <p>Coding</p>
+    </div></a>
+    <a href="financial.html"><div class="category" onclick="selectCategory('Financial Literacy')">
+        <i class="fas fa-dollar-sign"></i>
+        <p>Financial Literacy</p>
+    </div></a>
+    <a href="science.html"><div class="category" onclick="selectCategory('Science')">
+        <i class="fas fa-flask"></i>
+        <p>Science</p>
+    </div></a>
+     
+</div>
+
+<script>
+    function selectCategory(category) {
+        if (confirm("You selected: " + category + ". Do you want to proceed?")) {
+            // Redirect or load content dynamically
+            alert("Proceeding to " + category);
+        }
+    }
+</script>
+
+</body>
+</html>

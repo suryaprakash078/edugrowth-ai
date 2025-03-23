@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Paint Tool</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        canvas {
+            border: 1px solid #000;
+            cursor: crosshair;
+        }
+        #controls {
+            margin: 10px;
+        }
+        .color-box {
+            width: 30px;
+            height: 30px;
+            display: inline-block;
+            cursor: pointer;
+            border: 1px solid #000;
+        }
+        .shape-button {
+            margin: 0 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="controls">
+        <input type="color" id="colorPicker" value="#000000">
+        <select id="brushSize">
+            <option value="5">Small</option>
+            <option value="10">Medium</option>
+            <option value="15">Large</option>
+        </select>
+        <button id="eraserButton">Eraser</button>
+        <button id="clearButton">Clear</button>
+        <button id="saveButton">Save</button>
+        <button id="undoButton">Undo</button>
+        <button id="redoButton">Redo</button>
+        <button class="shape-button" id="lineButton">Line</button>
+        <button class="shape-button" id="rectButton">Rectangle</button>
+        <button class="shape-button" id="circleButton">Circle</button>
+    </div>
+    <canvas id="paintCanvas" width="800" height="600"></canvas>
+    
+    <script>
+        const canvas = document.getElementById('paintCanvas');
+        const ctx = canvas.getContext('2d');
+        const colorPicker = document.getElementById('colorPicker');
+        const brushSizeSelector = document.getElementById('brushSize');
+        const clearButton = document.getElementById('clearButton');
+        const saveButton = document.getElementById('saveButton');
+        const undoButton = document.getElementById('undoButton');
+        const redoButton = document.getElementById('redoButton');
+        const eraserButton = document.getElementById('eraserButton');
+        const lineButton = document.getElementById('lineButton');
+        const rectButton = document.getElementById('rectButton');
+        const circleButton = document.getElementById('circleButton');
+
+        let painting = false;
+        let erasing = false;
+        let drawingShape = null;
+        let startX, startY;
+        let paths = [];
+        let undonePaths = [];
+
+        function startPosition(e) {
+            painting = true;
+            startX = e.clientX - canvas.offsetLeft;
+            startY = e.clientY - canvas.offsetTop;
+            if (drawingShape) {
+                ctx.beginPath();
+                ctx.moveTo(startX, startY);
+            }
+        }
+
+        function endPosition() {
+            painting = false;
+            ctx.beginPath();
+            if (!erasing && drawingShape) {
+                paths.push({ color: ctx.strokeStyle, size: ctx.lineWidth, path: ctx.getImageData(0, 0, canvas.width, canvas.height) });
+                undonePaths = []; // Clear redo stack
+            }
+        }
+
+        function draw(e) {
+            if (!painting) return;
+
+            ctx.lineWidth = brushSizeSelector.value; // Set the line width
+            ctx.lineCap = 'round'; // Set the line cap style
+            ctx.strokeStyle = erasing ? '#f0f0f0' : colorPicker.value; // Set the stroke color or eraser color
+
+            if (drawingShape) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.putImageData(paths[paths.length - 1]?.path || ctx.getImageData(0, 0, canvas.width, canvas.height), 0, 0);
+                const currentX = e.clientX - canvas.offsetLeft;
+                const currentY = e.clientY - canvas.offsetTop;
+
+                if (drawingShape === 'line') {
+                    ctx.beginPath();
+                    ctx.moveTo(startX, startY);
+                    ctx.lineTo(currentX, currentY);
+                    ctx.stroke();
+                } else if (drawingShape === 'rectangle') {
+                    ctx.strokeRect(startX, startY, currentX - startX, currentY - startY);
+                } else if (drawingShape === 'circle') {
+                    const radius = Math.sqrt(Math.pow(currentX - startX, 2) + Math.pow(currentY - startY, 2));
+                    ctx.beginPath();
+                    ctx.arc(startX, startY, radius, 0, Math.PI * 2);
+                    ctx.stroke();
+                }
+            } else {
+                ctx.lineTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
+            }
+        }
+
+        canvas.addEventListener('mousedown', startPosition);
+        canvas.addEventListener('mouseup', endPosition);
+        canvas.addEventListener('mousemove', draw);
+
+        clearButton.addEventListener('click', () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            paths = [];
+            undonePaths = [];
+        });
+
+        saveButton.addEventListener('click', () => {
+            const link = document.createElement('a');
+            link.download = 'drawing.png';
+            link.href = canvas.toDataURL();
+            link.click();
+        });
+
+        undoButton.addEventListener('click', () => {
+            if (paths.length > 0) {
+                const lastPath = paths.pop();
+                undonePaths.push(lastPath);
+                ctx.putImageData(lastPath.path, 0, 0);
+            }
+        });
+
+        redoButton.addEventListener('click', () => {
+            if (undonePaths.length > 0) {
+                const lastUndonePath = undonePaths.pop();
+                paths.push(lastUndonePath);
+                ctx.putImageData(lastUndonePath.path, 0, 0);
+            }
+        });
+
+        // Eraser functionality
+        eraserButton.addEventListener('click', () => {
+            erasing = !erasing;
+            eraserButton.textContent = erasing ? 'Brush' : 'Eraser';
+            ctx.strokeStyle = erasing ? '#f0f0f0' : colorPicker.value; // Update stroke color based on mode
+            drawingShape = null; // Disable shape drawing when using eraser
+        });
+
+        // Shape selection
+        lineButton.addEventListener('click', () => {
+            drawingShape = 'line';
+        });
+
+        rectButton.addEventListener('click', () => {
+            drawingShape = 'rectangle';
+        });
+
+        circleButton.addEventListener('click', () => {
+            drawingShape = 'circle';
+        });
+    </script>
+
+</body>
+</html>

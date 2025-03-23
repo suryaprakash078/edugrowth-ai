@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Literacy Courses and Tools</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 20px;
+        }
+        header {
+            text-align: center;
+            padding: 20px;
+            background-color: #28a745;
+            color: white;
+        }
+        h1, h2 {
+            margin: 0;
+        }
+        .course, .tool {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 10px 0;
+            background-color: white;
+        }
+        .calculator {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e7f3fe;
+            border: 1px solid #007BFF;
+            border-radius: 5px;
+        }
+        .calculator input {
+            margin: 5px 0;
+            padding: 10px;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .calculator button {
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .calculator button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Financial Literacy Courses and Tools</h1>
+    <p>Explore our range of financial literacy courses and practical tools to enhance your financial knowledge.</p>
+</header>
+
+<section>
+    <h2>Courses Offered</h2>
+    <div class="course">
+        <h3>Introduction to Financial Literacy</h3>
+        <p>Learn the basics of financial literacy, including budgeting, saving, and investing.</p>
+    </div>
+    <div class="course">
+        <h3>Personal Finance Management</h3>
+        <p>Understand how to manage your personal finances effectively and make informed financial decisions.</p>
+    </div>
+    <div class="course">
+        <h3>Investing Basics</h3>
+        <p>Explore the fundamentals of investing, including stocks, bonds, and mutual funds.</p>
+    </div>
+</section>
+
+<section>
+    <h2>Practical Tools</h2>
+    <div class="tool">
+        <h3>Money Calculator</h3>
+        <div class="calculator">
+            <h4>Calculate Your Savings</h4>
+            <input type="number" id="initialAmount" placeholder="Initial Amount ($)">
+            <input type="number" id="monthlyContribution" placeholder="Monthly Contribution ($)">
+            <input type="number" id="annualInterest" placeholder="Annual Interest Rate (%)">
+            <input type="number" id="years" placeholder="Number of Years">
+            <button onclick="calculateSavings()">Calculate</button>
+            <h4 id="result" style="margin-top: 10px;"></h4>
+        </div>
+    </div>
+    <div class="tool">
+        <h3>Budgeting Tool</h3>
+        <p>Use our budgeting tool to track your income and expenses effectively.</p>
+    </div>
+    <div class="tool">
+        <h3>Investment Tracker</h3>
+        <p>Keep track of your investments and monitor their performance over time.</p>
+    </div>
+</section>
+
+<script>
+    function calculateSavings() {
+        const initialAmount = parseFloat(document.getElementById('initialAmount').value) || 0;
+        const monthlyContribution = parseFloat(document.getElementById('monthlyContribution').value) || 0;
+        const annualInterest = parseFloat(document.getElementById('annualInterest').value) || 0;
+        const years = parseFloat(document.getElementById('years').value) || 0;
+
+        const totalMonths = years * 12;
+        const monthlyInterest = (annualInterest / 100) / 12;
+        let futureValue = initialAmount;
+
+        for (let i = 0; i < totalMonths; i++) {
+            futureValue = futureValue * (1 + monthlyInterest) + monthlyContribution;
+        }
+
+        document.getElementById('result').innerText = `Future Value: $${futureValue.toFixed(2)}`;
+    }
+</script>
+
+</body>
+</html>
