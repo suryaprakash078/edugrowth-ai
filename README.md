@@ -1,2 +1,64 @@
-# edugrowth-ai
-This Python script is a simple Wi-Fi network scanner that uses the nmcli command-line tool to detect nearby Wi-Fi networks. It defines a function run_command to execute shell commands safely, optionally capturing their output. The scan_networks function runs the nmcli command to list available Wi-Fi networks, extracting their SSIDs and BSSIDs. The main function orchestrates the scanning process, printing a list of detected networks with their SSIDs and BSSIDs. If no networks are found, it notifies the user accordingly. The script provides a straightforward way to programmatically scan and display nearby Wi-Fi access points on systems where nmcli is available.
+-- Create Database
+CREATE DATABASE college;
+USE college;
+
+-- Department table
+CREATE TABLE dept (
+  deptid NUMBER(2) PRIMARY KEY,
+  deptname VARCHAR(20),
+  loc VARCHAR(10)
+);
+
+INSERT INTO dept VALUES
+(1,'cs','cbe'),
+(2,'cs','cbe'),
+(3,'it','che'),
+(4,'ct','erd');
+
+-- Employee table
+CREATE TABLE empl (
+  empid NUMBER(4) PRIMARY KEY,
+  empname VARCHAR(10),
+  deptid NUMBER(2),
+  FOREIGN KEY (deptid) REFERENCES dept(deptid)
+);
+
+INSERT INTO empl VALUES
+(101,'aa',1),
+(102,'bb',2),
+(103,'cc',1),
+(104,'dd',3);
+
+-- INNER JOIN
+SELECT d.deptname, e.empname
+FROM dept d JOIN empl e
+ON d.deptid = e.deptid
+WHERE d.deptid > 2
+ORDER BY d.deptname;
+
+-- LEFT OUTER JOIN
+SELECT d.deptname, e.empname
+FROM dept d LEFT JOIN empl e
+ON d.deptid = e.deptid
+WHERE d.deptid > 2
+ORDER BY d.deptname;
+
+-- RIGHT OUTER JOIN
+SELECT d.deptname, e.empname
+FROM dept d RIGHT JOIN empl e
+ON d.deptid = e.deptid
+WHERE d.deptid > 2
+ORDER BY d.deptname;
+
+-- FULL OUTER JOIN
+SELECT d.deptname, e.empname
+FROM dept d FULL JOIN empl e
+ON d.deptid = e.deptid
+WHERE d.deptid > 2
+ORDER BY d.deptname;
+
+-- CROSS JOIN
+SELECT d.deptname, e.empname
+FROM dept d CROSS JOIN empl e
+WHERE d.deptid > 2
+ORDER BY d.deptname;
