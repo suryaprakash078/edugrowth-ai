@@ -64,6 +64,9 @@ WHERE d.deptid > 2
 ORDER BY d.deptname;
 
 
+
+
+
 -- Table creation
 CREATE TABLE exe6 (
   id NUMBER(10),
