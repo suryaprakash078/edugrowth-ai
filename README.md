@@ -1,29 +1,34 @@
-DECLARE
+CREATE TABLE e16 (
+    empno NUMBER(20) PRIMARY KEY,
+    basic NUMBER(20),
+    hra   NUMBER(20),
+    da    NUMBER(20),
+    ded   NUMBER(20),
+    net   NUMBER(20),
+    gross NUMBER(20)
+);
 
-type namesarray IS VARRAY(5) OF VARCHAR2(10); type grades IS VARRAY(5) OF INTEGER;
+INSERT INTO e16 VALUES (&empno, &basic, &hra, &da, &ded, &net, &gross);
+INSERT INTO e16 VALUES (&empno, &basic, &hra, &da, &ded, &net, &gross);
 
-names namesarray;
+SELECT * FROM e16;
 
-marks grades;
+CREATE TABLE backup1 (
+    empno NUMBER(20),
+    gross NUMBER(20),
+    net   NUMBER(20)
+);
 
-total integer;
-
+CREATE OR REPLACE TRIGGER sal_change
+AFTER UPDATE ON e16
+FOR EACH ROW
 BEGIN
-
-names := namesarray('Kavita', 'Pritam', 'Ayan', 'Rishav', 'Aziz');
-
-marks:= grades(98, 97, 78, 87, 92);
-
-total := names.count;
-
-dbms output.put_line('Total' || total || 'Students');
-
-FOR i in 1 .. total LOOP
-
-dbms_output.put_line('Student:' || names(i) |'
-
-Marks:' || marks(i));
-
-END LOOP;
-
+    INSERT INTO backup1 (empno, gross, net)
+    VALUES (:OLD.empno, :OLD.gross, :OLD.net);
 END;
+/
+
+UPDATE e16 SET basic = 30000 WHERE empno = 101;
+
+SELECT * FROM e16;
+SELECT * FROM backup1;
