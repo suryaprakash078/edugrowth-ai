@@ -1,34 +1,37 @@
-CREATE TABLE e16 (
-    empno NUMBER(20) PRIMARY KEY,
-    basic NUMBER(20),
-    hra   NUMBER(20),
-    da    NUMBER(20),
-    ded   NUMBER(20),
-    net   NUMBER(20),
-    gross NUMBER(20)
-);
+Program 1
 
-INSERT INTO e16 VALUES (&empno, &basic, &hra, &da, &ded, &net, &gross);
-INSERT INTO e16 VALUES (&empno, &basic, &hra, &da, &ded, &net, &gross);
 
-SELECT * FROM e16;
+from pyspark.sql import SparkSession
+from pyspark.sql.types import StringType
 
-CREATE TABLE backup1 (
-    empno NUMBER(20),
-    gross NUMBER(20),
-    net   NUMBER(20)
-);
+# Step 1: Create Spark Session
+spark = SparkSession.builder \
+    .appName("Count Non String Columns") \
+    .getOrCreate()
 
-CREATE OR REPLACE TRIGGER sal_change
-AFTER UPDATE ON e16
-FOR EACH ROW
-BEGIN
-    INSERT INTO backup1 (empno, gross, net)
-    VALUES (:OLD.empno, :OLD.gross, :OLD.net);
-END;
-/
+# Step 2: Create Sample Data
+data = [
+    (1, "Abinash", 25, 45000.50),
+    (2, "Arun", 22, 35000.00),
+    (3, "Kumar", 24, 40000.00)
+]
 
-UPDATE e16 SET basic = 30000 WHERE empno = 101;
+columns = ["ID", "Name", "Age", "Salary"]
 
-SELECT * FROM e16;
-SELECT * FROM backup1;
+# Step 3: Create DataFrame
+df = spark.createDataFrame(data, columns)
+
+# Step 4: Display DataFrame
+df.show()
+
+# Step 5: Display Schema
+df.printSchema()
+
+# Step 6: Count Non-String Columns
+count = sum(
+    1 for field in df.schema.fields
+    if not isinstance(field.dataType, StringType)
+)
+
+# Step 7: Print Result
+print("Number of columns that are not strings:", count)
